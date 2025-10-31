@@ -46,5 +46,36 @@ class AccountController extends Controller
 
     }
 
+    public function login_user(Request $request) {
+        $request->validate([
+            'email' => 'required|string|email',
+            'password' => 'required|string'
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        If (!$user) {
+            return redirect()->back()->with('error', 'Account not found');
+        }
+
+        $pass_check = Hash::check($request->password, $user->password);
+
+        if (!$pass_check) {
+            return redirect()->back()->with('error', 'Password incorrect');
+        }
+
+        Auth::login($user);
+
+        return redirect('/dashboard/index')->with('success', 'Welcome Back '.$user->name);
+    }
+    
+    public function logout_user(Request $request) {
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/')->with('success', 'Logout successful!');
+    }
     
 }

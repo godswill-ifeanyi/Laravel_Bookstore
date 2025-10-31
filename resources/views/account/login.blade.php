@@ -6,14 +6,30 @@
   <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 <body>
+  @if (session('success'))
+    <script>
+      alert("{{ session('success') }}");
+    </script>
+  @elseif (session('error'))
+    <script>
+      alert("{{ session('error') }}");
+    </script>
+  @endif
+  
   <div class="container auth">
-    <h1>Bookstore | Login</h1>
-    <form id="loginForm">
-      <input type="email" placeholder="Email" required>
-      <input type="password" placeholder="Password" required>
+    <h1>Bookstore Login</h1>
+    <form method="POST" action="{{ url('/login-user') }}" id="loginForm">
+      @csrf
+
+      <input type="email" placeholder="Email" name="email" required>
+      @error('email') <small style="color: red">{{$message}}</small> @enderror
+
+      <input type="password" placeholder="Password" name="password" required>
+      @error('password') <small style="color: red">{{$message}}</small> @enderror
+
       <button type="submit">Login</button>
     </form>
-    <p>Don't have an account? <a href="{{ url('/register') }}">Register</a></p>
+    <p>Don't have an account? <a href="{{ route('register') }}">Register</a></p>
     <p id="loginMsg" class="message"></p>
   </div>
 
