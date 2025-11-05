@@ -1,74 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Bookstore Dashboard</title>
-  <link rel="stylesheet" href="{{ asset('css/style.css')}}">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="{{ asset('css/dasboard.css')}}" />
 </head>
 <body>
-  @if (session('success'))
-    <script>
-      alert("{{ session('success') }}");
-    </script>
-  @elseif (session('error'))
-    <script>
-      alert("{{ session('error') }}");
-    </script>
-  @endif
-  
-  <nav>
-    <h2>📚 My Bookstore</h2>
-    <form onsubmit="return confirm('Are you sure to logout?')" method="POST" action="{{ url('/logout-user') }}">
-      @csrf
+  <div class="dashboard">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h2 class="logo">MyDashboard</h2>
+      <nav class="nav">
+        <a href="#" class="active">🏠 Home</a>
+        <a href="{{ url('dashboard/books')}}">📚 Books</a>
+        <a href="#">👤 Profile</a>
+        <a href="#">
+            <form onsubmit="return confirm('Are you sure to logout?')" method="POST" action="{{ url('/logout-user') }}">
+            @csrf
 
-      <button type="submit" id="logoutBtn">Logout</button>
-    </form>
-  </nav>
+            <button type="submit" id="logoutBtn">Logout</button>
+            </form>
+        </a>
+      </nav>
+    </aside>
 
-  <div class="container">
-    <h3>Add Book</h3>
-    <form method="POST" action="{{ url('/dashboard/books') }}" enctype="multipart/form-data" id="bookForm">
-      @csrf
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="header">
+        <h1>Dashboard Overview</h1>
+      </header>
 
-      <input type="hidden">
-      <input type="text" placeholder="Book Title" name="title" >
-      @error('title') <small style="color: red">{{$message}}</small> @enderror
+      <!-- Cards Section -->
+      <section class="cards">
+        <div class="card">
+          <h3>Total Users</h3>
+          <p>1,250</p>
+        </div>
+        <div class="card">
+          <h3>Books Sold</h3>
+          <p>780</p>
+        </div>
+        <div class="card">
+          <h3>Revenue</h3>
+          <p>$12,340</p>
+        </div>
+        <div class="card">
+          <h3>Pending Orders</h3>
+          <p>24</p>
+        </div>
+      </section>
 
-      <input type="text" placeholder="Author" name="author" >
-      @error('author') <small style="color: red">{{$message}}</small> @enderror
-
-      <input type="number" placeholder="Price" name="price" >
-      @error('price') <small style="color: red">{{$message}}</small> @enderror
-
-      <input type="number" placeholder="Pages" name="pages" >
-      @error('pages') <small style="color: red">{{$message}}</small> @enderror
-      <br><br>
-
-      <textarea placeholder="Description" name="description" cols="30" rows="10"></textarea>
-      @error('dsecription') <small style="color: red">{{$message}}</small> @enderror
-
-      <input type="file" placeholder="Image" name="image" >
-      @error('image') <small style="color: red">{{$message}}</small> @enderror
-      
-      <button type="submit">Save Book</button>
-    </form>
-
-    <h3>Book List</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th>Author</th>
-          <th>Price</th>
-          <th>Pages</th>
-          <th>Images</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody id="bookList"></tbody>
-    </table>
+      <!-- Table Section -->
+      <section class="table-section">
+        <h2>Recent Transactions</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Book Title</th>
+              <th>Buyer</th>
+              <th>Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>The Great Gatsby</td>
+              <td>John Doe</td>
+              <td>2025-11-01</td>
+              <td>Completed</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>1984</td>
+              <td>Jane Smith</td>
+              <td>2025-11-02</td>
+              <td>Pending</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>To Kill a Mockingbird</td>
+              <td>Michael Brown</td>
+              <td>2025-11-02</td>
+              <td>Completed</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>Harry Potter</td>
+              <td>Sara Johnson</td>
+              <td>2025-11-03</td>
+              <td>Shipped</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
   </div>
-
-  <script src="script.js"></script>
 </body>
 </html>

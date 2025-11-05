@@ -8,12 +8,22 @@ use Illuminate\Support\Facades\Auth;
 
 class BookController extends Controller
 {
+
+    public function __construct() {
+        if (!Auth::check()) {
+            return redirect('/login')->with('Accessed denied. Unauthenticated!');
+        }
+    }
+    
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $books = Book::latest()->get();
+        
+        return view('dashboard.book', compact('books'));
+        
     }
 
     /**
@@ -35,11 +45,11 @@ class BookController extends Controller
             'price' => 'required|numeric',
             'pages' => 'required|integer',
             'description' => 'nullable',
-            'image' => 'nullable|mimes:jpg,jpeg,png,webp|max:2048',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
         if ($request->hasFile('image')) {
-            $image_name = time().'.'.$request->image->extension();$request->image->move(public_path('images'), $image_name);
+            $image_name = uniqid().'.'.$request->image->extension();$request->image->move(public_path('images'), $image_name);
         } else {
             $image_name = null;
         }
@@ -49,9 +59,22 @@ class BookController extends Controller
             'title' => $request->title,
             'author' => $request->author,
             'price' => $request->price,
-            'pages' => $request->pages,            'description' => $request->description,
+            'pages' => $request->pages,
+            'description' => $request->description,
             'image' => $image_name,
         ]);
+        // INSERT INTO TABLE books () VALUES ();
+
+        /* $book = new Book();
+        $book->user_id = Auth::id();
+        $book->title = $request->title;
+        $book->author = $request->author;
+        $book->price = $request->price;
+        $book->pages = $request->pages;
+        $book->description = $request->description;
+        $book->image = $image_name;
+        $book->save(); */
+        
 
         return redirect()->back()->with('success', 'Book added successfully');
     }
@@ -85,6 +108,9 @@ class BookController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $book = Book::find($id);
+        $book->destroy();
+
+        return redirect()->back()->with('success', 'Book added successfully');
     }
 }
