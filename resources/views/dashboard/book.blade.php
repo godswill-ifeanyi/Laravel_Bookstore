@@ -76,7 +76,7 @@
         
           @forelse ($books as $book)
             <tr>
-                <td>{{ $book->title }}</td>
+                <td><a href="{{ url('/dashboard/books/'.$book->id) }}">{{ $book->title }}</a> </td>
                 <td>{{ $book->author }}</td>
                 <td>{{ $book->price }}</td>
                 <td>{{ $book->pages }}</td>
@@ -93,6 +93,8 @@
 
                 <td>
                   @if (Auth::user()->id === $book->user->id)
+                    <a href="{{ url('/dashboard/books/'.$book->id) }}">See more</a>
+                    <br>
                     <a href="{{ url('/dashboard/books/'.$book->id.'/edit') }}">Edit</a>
                     <br><br>
                   <form method="POST" action="{{ url('/dashboard/books/'.$book->id) }}" onsubmit="return confirm('Are you sure to delete this book?')">

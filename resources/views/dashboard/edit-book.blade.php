@@ -33,8 +33,9 @@
     
     <h3>Edit Book</h3>
 
-    <form method="POST" action="{{ url('/dashboard/books') }}" enctype="multipart/form-data" id="bookForm">
+    <form method="POST" action="{{ url('/dashboard/books/'.$book->id) }}" enctype="multipart/form-data" id="bookForm">
       @csrf
+      @method('PUT')
 
       <input type="hidden">
       <input type="text" placeholder="Book Title" value="{{ $book->title }}" name="title" >
@@ -50,8 +51,13 @@
       @error('pages') <small style="color: red">{{$message}}</small> @enderror
       <br><br>
 
-      <textarea placeholder="Description" name="description" cols="30" rows="10"></textarea>
+      <textarea placeholder="Description" name="description" cols="30" rows="10">{{ $book->description }}</textarea>
       @error('dsecription') <small style="color: red">{{$message}}</small> @enderror
+      <br><br><br>
+
+      <label>Old Image</label>
+      <img width="200px" src="{{ asset('images/'.$book->image) }}" alt="">
+      <input type="hidden" name="old_image" value="{{$book->image}}">
 
       <input type="file" placeholder="Image" name="image" >
       @error('image') <small style="color: red">{{$message}}</small> @enderror

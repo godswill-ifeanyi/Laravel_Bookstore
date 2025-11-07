@@ -84,7 +84,9 @@ class BookController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $book = Book::find($id);
+
+        return view('dashboard.show-book')->with('book',$book);
     }
 
     /**
@@ -106,7 +108,31 @@ class BookController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'author' => 'required|string|max:255',
+            'price' => 'required|numeric',
+            'pages' => 'required|integer',
+            'description' => 'nullable',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+        ]);
+
+        if ($request->hasFile('image')) {
+            $image_name = uniqid().'.'.$request->image->extension();$request->image->move(public_path('images'), $image_name);
+        } else {
+            $image_name = $request->old_image;
+        }
+
+        $book = Book::find($id);
+        $book->title = $request->title;
+        $book->author = $request->author;
+        $book->price = $request->price;
+        $book->pages = $request->pages;
+        $book->description = $request->description;
+        $book->image = $image_name;
+        $book->update(); 
+
+        return redirect()->back()->with('success', 'Book updated successfully');
     }
 
     /**
