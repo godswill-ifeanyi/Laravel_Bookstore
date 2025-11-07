@@ -92,7 +92,13 @@ class BookController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $book = Book::find($id);
+        
+        if ($book->user_id !== Auth::id()) {
+            return redirect('/dashboard/books')->with('error', 'Accessed denied. Unauthorized!');
+        }
+
+        return view('dashboard.edit-book', compact('book'));
     }
 
     /**

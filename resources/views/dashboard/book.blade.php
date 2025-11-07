@@ -92,14 +92,19 @@
                 <td>{{ $book->user->name }}</td>
 
                 <td>
-                  <button>Edit</button>
-                  <br><br>
+                  @if (Auth::user()->id === $book->user->id)
+                    <a href="{{ url('/dashboard/books/'.$book->id.'/edit') }}">Edit</a>
+                    <br><br>
                   <form method="POST" action="{{ url('/dashboard/books/'.$book->id) }}" onsubmit="return confirm('Are you sure to delete this book?')">
                     @csrf
                     @method('DELETE')
 
                     <button type="submit" style="background-color:red;">Delete</button>
                   </form>
+                  @else
+                    <p style="color: gray;">No Actions Available</p>
+                  @endif
+                  
                 </td>
             </tr>
           @empty

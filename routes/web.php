@@ -19,4 +19,4 @@ Route::prefix('/dashboard')->middleware('auth')->group(function () {
     Route::get('/index', [DashboardController::class, 'index']);
 
     Route::resource('books', BookController::class);
-});
+}); 
