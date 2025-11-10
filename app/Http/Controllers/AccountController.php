@@ -66,6 +66,11 @@ class AccountController extends Controller
 
         Auth::login($user);
 
+        if (Auth::user()->role === 'admin') {
+                return redirect('/admin/index')->with('success', 'Welcome Back '.$user->name);
+            }
+
+
         return redirect('/dashboard/index')->with('success', 'Welcome Back '.$user->name);
     }
     

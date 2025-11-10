@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\DashboardController;
 
@@ -20,3 +21,8 @@ Route::prefix('/dashboard')->middleware('auth')->group(function () {
 
     Route::resource('books', BookController::class);
 }); 
+
+Route::prefix('/admin')->middleware(['auth','admin'])->group(function () {
+    Route::get('/index', [AdminController::class, 'index']);
+
+});
