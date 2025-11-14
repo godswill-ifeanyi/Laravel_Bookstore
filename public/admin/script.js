@@ -38,50 +38,20 @@ function navActivate(route){ document.querySelectorAll('.nav-link').forEach(a=> 
 // Renderers
 function renderHome(){
   document.title = 'Home - AdminLite';
-  return `
-    <div class="grid">
-      <div class="card"><h3>Total Users</h3><div class="metrics"><div class="metric-value">${users.length}</div><div class="muted">registered</div></div></div>
-      <div class="card"><h3>Total Books</h3><div class="metrics"><div class="metric-value">${books.length}</div><div class="muted">catalogued</div></div></div>
-      <div class="card"><h3>Transactions (30d)</h3><div class="metrics"><div class="metric-value">$${tx.filter(t=>t.status==='Success').reduce((a,b)=>a+ (b.amount||0),0).toFixed(2)}</div><div class="muted">completed</div></div></div>
-    </div>
-    <div class="card">
-      <h3>Recent Activity</h3>
-      <div class="table-wrap"><table class="table"><thead><tr><th>Time</th><th>User</th><th>Action</th><th>Status</th></tr></thead><tbody>
-        <tr><td>Just now</td><td>Ada Lovelace</td><td>Added a book</td><td>Success</td></tr>
-        <tr><td>5 min ago</td><td>Grace Hopper</td><td>Resolved a ticket</td><td>Success</td></tr>
-        <tr><td>12 min ago</td><td>Linus</td><td>Payment failed</td><td>Failed</td></tr>
-      </tbody></table></div>
-    </div>
-  `;
+  
 }
 
 function renderUsers(){
   document.title = 'Users - AdminLite';
   return `
-    <div class="card">
-      <div class="row" style="justify-content:space-between;align-items:center">
-        <h3>Users</h3>
-        <div class="row"><input placeholder="Filter users" class="input" id="filterUsers"/><button class="btn primary" id="addUserBtn">+ New</button></div>
-      </div>
-      <div class="table-wrap"><table class="table"><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Joined</th></tr></thead><tbody>
-        ${users.map(u=>`<tr><td>${u.name}</td><td>${u.email}</td><td>${u.role}</td><td>${u.status}</td><td>${u.joined}</td></tr>`).join('')}
-      </tbody></table></div>
-    </div>
+    
   `;
 }
 
 function renderBooks(){
   document.title = 'Books - AdminLite';
   return `
-    <div class="card">
-      <div class="row" style="justify-content:space-between;align-items:center">
-        <h3>Books</h3>
-        <div class="row"><input placeholder="Search books" class="input" id="filterBooks"/><button class="btn primary" id="addBookBtn">+ Add</button></div>
-      </div>
-      <div class="table-wrap"><table class="table"><thead><tr><th>Title</th><th>Author</th><th>Status</th></tr></thead><tbody>
-        ${books.map(b=>`<tr><td>${b.title}</td><td>${b.author}</td><td>${b.status}</td></tr>`).join('')}
-      </tbody></table></div>
-    </div>
+    
   `;
 }
 

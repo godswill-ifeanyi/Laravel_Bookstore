@@ -25,4 +25,12 @@ Route::prefix('/dashboard')->middleware('auth')->group(function () {
 Route::prefix('/admin')->middleware(['auth','admin'])->group(function () {
     Route::get('/index', [AdminController::class, 'index']);
 
+    Route::get('/users', [AdminController::class, 'users']);
+    Route::get('/books', [AdminController::class, 'books']);
+    Route::get('/books/create', [AdminController::class, 'create_book']);
+    Route::post('/books', [AdminController::class, 'store_book']);
+    Route::get('/books/{id}', [AdminController::class, 'show_book']);
+    Route::get('/books/{id}/edit', [AdminController::class, 'edit_book']);
+    Route::put('/books/{id}', [AdminController::class, 'update_book']);
+    Route::delete('/books/{id}', [AdminController::class, 'delete_book']);
 });

@@ -64,33 +64,29 @@
       </header>
 
       <main class="content" id="content" role="main">
-        <div class="grid">
-          <div class="card"><h3>Total Users</h3><div class="metrics"><div class="metric-value">{{ $users->count() }}</div><div class="muted">registered</div></div></div>
-          <div class="card"><h3>Total Books</h3><div class="metrics"><div class="metric-value">{{ $books->count() }}</div><div class="muted">catalogued</div></div></div>
-          <div class="card"><h3>Transactions (30d)</h3><div class="metrics"><div class="metric-value">$9000</div><div class="muted">completed</div></div></div>
-        </div>
         <div class="card">
-          <h3>Recent Activity</h3>
-          <div class="table-wrap"><table class="table"><thead><tr><th>Time</th><th>User</th><th>Action</th><th>Description</th><th>Status</th></tr></thead><tbody>
-              @forelse ($activities as $activity)
-                <tr>
-                  <td>{{ $activity->created_at->format('Y m d h:s') }}</td>
-                  <td>{{ $activity->user->email }}</td>
-                  <td>{{ $activity->action }}</td>
-                  <td>{{ $activity->description }}</td>
-                  <td><span class="status success">Success</span></td>
-                </tr>
-              @empty
-                <tr>
-                  <td colspan="5">No recent activity found.</td>
-                </tr>
-              @endforelse
-          </tbody></table>
-          <div class="pagination-wrapper">
-            {{ $activities->links() }}
-          </div>
-          </div>
-        </div>
+      <div class="row" style="justify-content:space-between;align-items:center">
+        <h3>Users</h3>
+        <div class="row"><input placeholder="Filter users" class="input" id="filterUsers"/><button class="btn primary" id="addUserBtn">+ New</button></div>
+      </div>
+      <div class="table-wrap"><table class="table"><thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Username</th><th>Status</th><th>Joined</th></tr></thead><tbody>
+        @forelse ($users as $user)
+          <tr>
+            <td>{{ $user->name }}</td>
+            <td>{{ $user->email }}</td>
+            <td>{{ $user->phone }}</td>
+            <td>{{ $user->username }}</td>
+            <td>{{ $user->status ? 'Active':'Restricted' }}</td>
+            <td>{{ $user->created_at->format('M d, Y') }}</td>
+          </tr>
+        @empty
+          <tr>
+            <td colspan="5">No user found.</td>
+          </tr>
+        @endforelse  
+      </tbody></table></div>
+    </div>
+        
       </main>
 
       <footer class="footer">

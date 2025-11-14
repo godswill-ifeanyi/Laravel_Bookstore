@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Helpers\ActivityLogger;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -40,6 +41,8 @@ class AccountController extends Controller
 
         // Log the user in (optional)
         Auth::login($user);
+
+        ActivityLogger::log('User Registered', $user->email.' just registered an account.');
 
         // Redirect to a desired location, e.g., home page
         return redirect('dashboard/index')->with('success', 'Registration successful!');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use Illuminate\Http\Request;
+use App\Helpers\ActivityLogger;
 use Illuminate\Support\Facades\Auth;
 
 class BookController extends Controller
@@ -63,18 +64,8 @@ class BookController extends Controller
             'description' => $request->description,
             'image' => $image_name,
         ]);
-        // INSERT INTO TABLE books () VALUES ();
-
-        /* $book = new Book();
-        $book->user_id = Auth::id();
-        $book->title = $request->title;
-        $book->author = $request->author;
-        $book->price = $request->price;
-        $book->pages = $request->pages;
-        $book->description = $request->description;
-        $book->image = $image_name;
-        $book->save(); */
         
+        ActivityLogger::log('Book Added', Auth::user()->email.' just added a book'.' titled '.$request->title);
 
         return redirect()->back()->with('success', 'Book added successfully');
     }

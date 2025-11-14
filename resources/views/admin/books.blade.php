@@ -7,6 +7,15 @@
   <link rel="stylesheet" href="{{ asset('admin/style.css') }}" />
 </head>
 <body>
+    @if (session('success'))
+    <script>
+      alert("{{ session('success') }}");
+    </script>
+  @elseif (session('error'))
+    <script>
+      alert("{{ session('error') }}");
+    </script>
+  @endif
   <div class="app">
     <aside class="sidebar" id="sidebar" aria-label="Sidebar">
       <div class="brand">
@@ -21,7 +30,7 @@
       </div>
 
       <nav class="nav" role="navigation">
-        <a class="nav-link" data-route="home" href="#home"><span class="icon">🏠</span><span class="label">Home</span></a>
+        <a class="nav-link" data-route="home" href="{{ url('admin/index') }}"><span class="icon">🏠</span><span class="label">Home</span></a>
 
         <a class="nav-link" data-route="users" href="{{ url('admin/users') }}"><span class="icon">👥</span><span class="label">Users</span></a>
 
@@ -64,33 +73,40 @@
       </header>
 
       <main class="content" id="content" role="main">
-        <div class="grid">
-          <div class="card"><h3>Total Users</h3><div class="metrics"><div class="metric-value">{{ $users->count() }}</div><div class="muted">registered</div></div></div>
-          <div class="card"><h3>Total Books</h3><div class="metrics"><div class="metric-value">{{ $books->count() }}</div><div class="muted">catalogued</div></div></div>
-          <div class="card"><h3>Transactions (30d)</h3><div class="metrics"><div class="metric-value">$9000</div><div class="muted">completed</div></div></div>
-        </div>
         <div class="card">
-          <h3>Recent Activity</h3>
-          <div class="table-wrap"><table class="table"><thead><tr><th>Time</th><th>User</th><th>Action</th><th>Description</th><th>Status</th></tr></thead><tbody>
-              @forelse ($activities as $activity)
-                <tr>
-                  <td>{{ $activity->created_at->format('Y m d h:s') }}</td>
-                  <td>{{ $activity->user->email }}</td>
-                  <td>{{ $activity->action }}</td>
-                  <td>{{ $activity->description }}</td>
-                  <td><span class="status success">Success</span></td>
-                </tr>
-              @empty
-                <tr>
-                  <td colspan="5">No recent activity found.</td>
-                </tr>
-              @endforelse
-          </tbody></table>
-          <div class="pagination-wrapper">
-            {{ $activities->links() }}
-          </div>
-          </div>
-        </div>
+      <div class="row" style="justify-content:space-between;align-items:center">
+        <h3>Books</h3>
+        <div class="row"><input placeholder="Search books" class="input" id="filterBooks"/><button class="btn primary" id="addBookBtn">+ Add</button></div>
+      </div>
+      <div class="table-wrap"><table class="table"><thead><tr><th>Title</th><th>Author</th><th>Status</th><th>Actions</th></tr></thead><tbody>
+        @foreach($books as $book)
+        <tr>
+          <td>{{ $book->title }}</td>
+          <td>{{ $book->author }}</td>
+          <td>{{ $book->price }}</td>
+          <td>{{ $book->status ? 'Available':'Unavailable' }}</td>
+          <td>
+            @if ($book->image !== null)
+                <img src="{{ asset('images/'.$book->image) }}" width="100px" alt="">
+            @else
+                <p>Not uploaded</p>
+            @endif
+          </td>
+          <td>
+            <a href="{{ url('admin/books/'.$book->id) }}" class="btn secondary btn-sm">See more</a>
+
+            <a href="{{ url('admin/'.$book->id.'/edit') }}" class="btn secondary btn-sm">Edit</a>
+
+            <form onsubmit="return confirm('Are you sure to delete this book?')" method="POST" action="{{ url('admin/books/'.$book->id) }}">
+              @csrf
+              @method('DELETE')
+              <button type="submit" style="color: red; cursor: pointer;">Delete</button>
+            </form>
+          </td>
+        </tr>
+        @endforeach
+      </tbody></table></div>
+    </div>
       </main>
 
       <footer class="footer">
